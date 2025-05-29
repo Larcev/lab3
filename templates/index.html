@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<!-- Указываем тип документа и язык -->
+<html lang="ru">
+<head>
+    <!-- Мета-информация для браузера -->
+    <meta charset="UTF-8"> <!-- Кодировка UTF-8 для поддержки русских символов -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Адаптивность для мобильных устройств -->
+    <title>Калькулятор объёмов</title> <!-- Заголовок страницы в браузере -->
+
+    <!-- Подключаем CSS стили из папки static -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <!-- Основной контейнер для всего содержимого -->
+    <div class="container">
+        <!-- Заголовок страницы -->
+        <h1>Калькулятор объёмов</h1>
+
+        <!-- Форма для ввода данных. method="POST" указывает, что данные будут отправлены на сервер -->
+        <form method="POST">
+            <!-- Выпадающий список для выбора фигуры -->
+            <label for="shape">Фигура:</label>
+            <select name="shape" id="shape" required>
+                <!-- Каждый option представляет одну фигуру -->
+                <option value="cube">Куб</option>
+                <option value="sphere">Шар</option>
+                <option value="cylinder">Цилиндр</option>
+                <option value="cone">Конус</option>
+            </select>
+
+            <!-- Динамическая область для ввода параметров фигуры -->
+            <div id="dimensions-input">
+                <!-- По умолчанию показываем поле для стороны куба -->
+                <!-- name="dimensions[]" - квадратные скобки позволяют получить массив значений на сервере -->
+                <!-- step="any" - разрешаем ввод дробных чисел -->
+                <!-- required - поле обязательно для заполнения -->
+                <label>Сторона (a): <input type="number" name="dimensions[]" step="any" required></label>
+            </div>
+
+            <!-- Поле для ввода точности вычислений -->
+            <label for="precision">Точность (знаков после запятой):</label>
+            <!-- Устанавливаем минимальное и максимальное значение, по умолчанию 2 -->
+            <input type="number" name="precision" id="precision" min="0" max="10" value="2">
+
+            <!-- Кнопка для отправки формы -->
+            <button type="submit">Рассчитать</button>
+        </form>
+
+        <!-- Блок для вывода результатов -->
+        <!-- Jinja2 условие: если результат не None (т.е. форма была отправлена) -->
+        {% if result is not none %}
+            <div class="result">
+                <h3>Результат:</h3>
+                <!-- Выводим результат вычислений -->
+                <p>{{ result }}</p>
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- JavaScript для динамического изменения формы -->
+    <script>
+        // Получаем элемент выбора фигуры
+        document.getElementById("shape").addEventListener("change", function() {
+            const shape = this.value; // Получаем выбранное значение
+            const dimensionsDiv = document.getElementById("dimensions-input"); // Контейнер для полей ввода
+            dimensionsDiv.innerHTML = ""; // Очищаем контейнер
+
+            // В зависимости от выбранной фигуры создаем соответствующие поля ввода
+            if (shape === "cube") {
+                // Для куба нужна только сторона
+                dimensionsDiv.innerHTML = '<label>Сторона (a): <input type="number" name="dimensions[]" step="any" required></label>';
+            } else if (shape === "sphere") {
+                // Для шара нужен только радиус
+                dimensionsDiv.innerHTML = '<label>Радиус (r): <input type="number" name="dimensions[]" step="any" required></label>';
+            } else if (shape === "cylinder" || shape === "cone") {
+                // Для цилиндра и конуса нужны радиус и высота
+                dimensionsDiv.innerHTML = `
+                    <label>Радиус (r): <input type="number" name="dimensions[]" step="any" required></label>
+                    <label>Высота (h): <input type="number" name="dimensions[]" step="any" required></label>
+                `;
+            }
+        });
+    </script>
+</body>
+</html>
