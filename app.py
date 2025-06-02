@@ -40,7 +40,7 @@ def calculate_volume(shape, dimensions, precision):
 # GET — когда пользователь просто открывает страницу.
 # POST — когда пользователь отправляет форму.
 
-werfwerfwef
+
 def index():
     """
     Основная функция, обрабатывающая главную страницу.
