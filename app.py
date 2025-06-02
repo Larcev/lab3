@@ -1,7 +1,9 @@
 from flask import Flask, render_template, request
 import math
+#request — нужен для обработки данных от клиента (например, из формы).
+#render_template — подгружает HTML-файлы из папки templates.
 
-app = Flask(__name__)
+app = Flask(__name__) #Создаёт объект app, который и есть веб-приложение.
 # Вы передаете специальную переменную __name__, которая содержит имя текущего модуля Python.
 # Она указывает экземпляру его расположение. Это необходимо, так как Flask устанавливает ряд путей за кадром.
 def calculate_volume(shape, dimensions, precision):
@@ -34,7 +36,12 @@ def calculate_volume(shape, dimensions, precision):
     return round(volume, precision) if precision >= 0 else volume
 # Декоратор route указывает, какой URL будет обрабатывать эта функция
 # methods=['GET', 'POST'] - разрешаем оба типа HTTP-запросов - это база, все так делают
-@app.route("/", methods=["GET", "POST"])
+@app.route("/", methods=["GET", "POST"]) 
+# Это маршрут: говорит Flask, что делать при заходе на URL /.
+# GET — когда пользователь просто открывает страницу.
+# POST — когда пользователь отправляет форму.
+
+
 def index():
     """
     Основная функция, обрабатывающая главную страницу.
@@ -54,4 +61,4 @@ def index():
 # Запускаем Flask-приложение
 # debug=True включает режим отладки (автоперезагрузка при изменениях, подробные ошибки)
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True) # Без app.run() Flask-приложение не запустится напрямую.
