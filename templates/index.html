@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html> <!-- -->
 <!-- Указываем тип документа и язык -->
 <html lang="ru">
 <head>
@@ -19,8 +19,8 @@
         <!-- Форма для ввода данных. method="POST" указывает, что данные будут отправлены на сервер -->
         <form method="POST">
             <!-- Выпадающий список для выбора фигуры -->
-            <label for="shape">Фигура:</label>
-            <select name="shape" id="shape" required>
+            <label for="shape">Фигура:</label> <!--label - подпись к полю-->
+            <select name="shape" id="shape" required>  <!-- -пользователь может выбрать только то, что предложено->
                 <!-- Каждый option представляет одну фигуру -->
                 <option value="cube">Куб</option>
                 <option value="sphere">Шар</option>
@@ -58,28 +58,8 @@
     </div>
 
     <!-- JavaScript для динамического изменения формы -->
-    <script>
-        // Получаем элемент выбора фигуры
-        document.getElementById("shape").addEventListener("change", function() {
-            const shape = this.value; // Получаем выбранное значение
-            const dimensionsDiv = document.getElementById("dimensions-input"); // Контейнер для полей ввода
-            dimensionsDiv.innerHTML = ""; // Очищаем контейнер
 
-            // В зависимости от выбранной фигуры создаем соответствующие поля ввода
-            if (shape === "cube") {
-                // Для куба нужна только сторона
-                dimensionsDiv.innerHTML = '<label>Сторона (a): <input type="number" name="dimensions[]" step="any" required></label>';
-            } else if (shape === "sphere") {
-                // Для шара нужен только радиус
-                dimensionsDiv.innerHTML = '<label>Радиус (r): <input type="number" name="dimensions[]" step="any" required></label>';
-            } else if (shape === "cylinder" || shape === "cone") {
-                // Для цилиндра и конуса нужны радиус и высота
-                dimensionsDiv.innerHTML = `
-                    <label>Радиус (r): <input type="number" name="dimensions[]" step="any" required></label>
-                    <label>Высота (h): <input type="number" name="dimensions[]" step="any" required></label>
-                `;
-            }
-        });
-    </script>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+
 </body>
 </html>

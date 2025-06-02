@@ -8,7 +8,6 @@ app = Flask(__name__) #Создаёт объект app, который и ест
 # Она указывает экземпляру его расположение. Это необходимо, так как Flask устанавливает ряд путей за кадром.
 def calculate_volume(shape, dimensions, precision):
     """Вычисляет объём фигуры с заданной точностью."""
-
     try:
         precision = int(precision) #это будет точность
         dimensions = [float(dim) for dim in dimensions] #преобразование все размеры в числа с пл. точкой
@@ -41,7 +40,7 @@ def calculate_volume(shape, dimensions, precision):
 # GET — когда пользователь просто открывает страницу.
 # POST — когда пользователь отправляет форму.
 
-
+werfwerfwef
 def index():
     """
     Основная функция, обрабатывающая главную страницу.
