@@ -9,30 +9,40 @@ app = Flask(__name__) #Создаёт объект app, который и ест
 def calculate_volume(shape, dimensions, precision):
     """Вычисляет объём фигуры с заданной точностью."""
     try:
-        precision = int(precision) #это будет точность
-        dimensions = [float(dim) for dim in dimensions] #преобразование все размеры в числа с пл. точкой
-    except (ValueError, TypeError): #если что-то не так
-        return None
+        # Преобразуем точность в целое число
+        precision = int(precision)
+        # Если точность вне допустимого диапазона — сбрасываем на 2
+        if precision < 0 or precision > 10:
+            precision = 2
+    except (ValueError, TypeError):
+        # Если точность не число или пустая — тоже сбрасываем на 2
+        precision = 2
 
-    volume = 0.0 #инициализируем объем
+    try:
+        # Преобразуем размеры в числа с плавающей точкой
+        dimensions = [float(dim) for dim in dimensions]
+    except (ValueError, TypeError):
+        return None  # Если хотя бы один из размеров некорректен
+
+    volume = 0.0  # Инициализируем переменную объёма
 
     if shape == "cube":
-        a = dimensions[0] # Берем первый элемент из dimensions
-        volume = a ** 3 # Куб: V = a³
+        a = dimensions[0]
+        volume = a ** 3
     elif shape == "sphere":
-        r = dimensions[0] # Берем первый элемент из dimensions
-        volume = (4/3) * math.pi * r ** 3 # Шар: V = (4/3)πr³
+        r = dimensions[0]
+        volume = (4 / 3) * math.pi * r ** 3
     elif shape == "cylinder":
-        r, h = dimensions[0], dimensions[1]  # Берем два элемента
-        volume = math.pi * r ** 2 * h # Цилиндр: V = πr²h
+        r, h = dimensions[0], dimensions[1]
+        volume = math.pi * r ** 2 * h
     elif shape == "cone":
-        r, h = dimensions[0], dimensions[1] # Берем два элемента
-        volume = (1/3) * math.pi * r ** 2 * h # Конус: V = (1/3)πr²h
+        r, h = dimensions[0], dimensions[1]
+        volume = (1 / 3) * math.pi * r ** 2 * h
     else:
-        return None # Если каким-то чудом передана неизвестная фигура и что-то не так
-    # Округляем результат до указанной точности и возвращаем
-    # Если точность отрицательная - возвращаем без округления
-    return round(volume, precision) if precision >= 0 else volume
+        return None  # Неподдерживаемая фигура
+
+    return round(volume, precision)
+
 # Декоратор route указывает, какой URL будет обрабатывать эта функция
 # methods=['GET', 'POST'] - разрешаем оба типа HTTP-запросов - это база, все так делают
 @app.route("/", methods=["GET", "POST"]) 

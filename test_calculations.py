@@ -8,7 +8,7 @@ class TestVolumeCalculations(unittest.TestCase):
 
     def test_cube_volume(self):
         """Тест объема куба"""
-        self.assertAlmostEqual(calculate_volume("cube", [5], 2), 125.0)
+        self.assertAlmostEqual(calculate_volume("cube", [1000], 2),  1000000000.0)
         self.assertAlmostEqual(calculate_volume("cube", [2.5], 3), 15.625)
 
     def test_sphere_volume(self):
